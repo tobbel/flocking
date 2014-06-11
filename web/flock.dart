@@ -10,7 +10,14 @@ class Flock {
     }
   }
   
+  // Boids have three rules for movement:
+  // 1. Separation: Steer to avoid crowding local flockmates.
+  // 2. Alignment: Steer towards the average heading of local flockmates.
+  // 3. Cohesion: Steer to move toward the average position of local flockmates.
   void update(double dt) {
+    // TODO: Calculate separation, alignment, cohesion for all boids. Change velocity vector.
+    // TODO: Apply velocity for all boids.
+    
     boids.forEach((b) => b.update(dt));
   }
 }

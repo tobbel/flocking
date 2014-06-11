@@ -24,7 +24,7 @@ void init() {
   canvas = querySelector('#flockingCanvas');
   flocking = new Flocking(canvas);
   
-  scheduleMicrotask(flocking.start());
+  scheduleMicrotask(flocking.start);
   window.animationFrame.then(update);
 }
 
