@@ -1,7 +1,7 @@
 part of flocking;
 
 class Boid {
-  static const NEIGHBORHOOD_DISTANCE_SQUARED = 10000.0;
+  static const NEIGHBORHOOD_DISTANCE_SQUARED = 500.0;
   
   Vector2 position;
   Vector2 velocity;
@@ -20,13 +20,45 @@ class Boid {
   }
   
   void separate(List<Boid> neighbors) {
+    if (neighbors.isEmpty)
+          return;
+        
     // Calculate sum of all toNeighbor vectors. Negate and add to velocity.
     Vector2 sumTo = new Vector2(0.0, 0.0);
     for (final n in neighbors) {
       Vector2 toNeighbor = n.position - position;
       sumTo += toNeighbor;
     }
-    velocity -= sumTo * 0.01;
+    velocity -= sumTo * 0.005;
+  }
+  
+  void align(List<Boid> neighbors) {
+    if (neighbors.isEmpty)
+      return;
+    
+    // Calculate average heading of neighbors. 
+    Vector2 sumVelocity = new Vector2(0.0, 0.0);
+    for (final n in neighbors) {
+      sumVelocity += n.velocity;
+    }
+    sumVelocity /= neighbors.length.toDouble();
+    
+    // TODO: Unsure how to apply this, think about it.
+    velocity += sumVelocity * 0.01;
+  }
+  
+  void cohese(List<Boid> neighbors) {
+    if (neighbors.isEmpty)
+      return;
+    
+    // Calculate average position of neighbors. Steer towards it.
+    Vector2 avgPosition = new Vector2(0.0, 0.0);
+    for (final n in neighbors) {
+      avgPosition += n.position;
+    }
+    avgPosition /= neighbors.length.toDouble();
+    final Vector2 toAvgPosition = avgPosition - position;
+    velocity += toAvgPosition * 0.01;
   }
   
   List<Boid> getNeighbors(List<Boid> boids) {
