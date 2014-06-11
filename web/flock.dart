@@ -2,11 +2,13 @@ part of flocking;
 
 class Flock {
   List<Boid> boids;
+  static const int NUM_BOIDS = 50;
+  
   Flock() {
     boids = new List<Boid>();
     Vector2 startPosition = new Vector2(50.0, 50.0);
-    for (int i = 0; i < 50; i++) {
-      boids.add(new Boid(startPosition, boids));
+    for (int i = 0; i < NUM_BOIDS; i++) {
+      boids.add(new Boid(startPosition));
     }
   }
   
@@ -17,6 +19,11 @@ class Flock {
   void update(double dt) {
     // TODO: Calculate separation, alignment, cohesion for all boids. Change velocity vector.
     // TODO: Apply velocity for all boids.
+    boids.forEach((b) {
+      b.getNeighbors(boids).forEach((n) {
+        
+      });  
+    });
     
     boids.forEach((b) => b.update(dt));
   }
