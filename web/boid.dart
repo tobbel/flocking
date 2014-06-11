@@ -16,6 +16,17 @@ class Boid {
   
   void update(double dt) {
     position += velocity * dt;
+    velocity *= 0.82;
+  }
+  
+  void separate(List<Boid> neighbors) {
+    // Calculate sum of all toNeighbor vectors. Negate and add to velocity.
+    Vector2 sumTo = new Vector2(0.0, 0.0);
+    for (final n in neighbors) {
+      Vector2 toNeighbor = n.position - position;
+      sumTo += toNeighbor;
+    }
+    velocity -= sumTo * 0.01;
   }
   
   List<Boid> getNeighbors(List<Boid> boids) {
@@ -24,6 +35,7 @@ class Boid {
     {
       // TODO: Angle
       //Vector2 toNeighbor = b.position - position;
+      //final double angle = Math.atan2(toNeighbor.y, toNeighbor.x);
       
       // DistanceTo
       final double distanceTo = position.distanceToSquared(b.position);

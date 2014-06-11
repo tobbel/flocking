@@ -20,9 +20,11 @@ class Flock {
     // TODO: Calculate separation, alignment, cohesion for all boids. Change velocity vector.
     // TODO: Apply velocity for all boids.
     boids.forEach((b) {
-      b.getNeighbors(boids).forEach((n) {
-        
-      });  
+      final List<Boid> neighbors = b.getNeighbors(boids);
+      
+      b.separate(neighbors);
+      //b.align(neighbors);
+      //b.cohese(neighbors);
     });
     
     boids.forEach((b) => b.update(dt));
