@@ -2,11 +2,11 @@ part of flocking;
 
 class Flock {
   List<Boid> boids;
-  static const int NUM_BOIDS = 50;
+  static const int NUM_BOIDS = 200;
   
   Flock() {
     boids = new List<Boid>();
-    Vector2 startPosition = new Vector2(50.0, 50.0);
+    Vector2 startPosition = new Vector2(100.0, 100.0);
     for (int i = 0; i < NUM_BOIDS; i++) {
       boids.add(new Boid(startPosition));
     }
