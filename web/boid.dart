@@ -1,8 +1,8 @@
 part of flocking;
 
 class Boid {
-  static const double NEIGHBORHOOD_DISTANCE = 25.0;
-  static const double NEIGHBORHOOD_DISTANCE_SQUARED = 625.0;
+  static const double NEIGHBORHOOD_DISTANCE = 10.0;
+  static const double NEIGHBORHOOD_DISTANCE_SQUARED = 100.0;
   
   Vector2 position;
   Vector2 velocity;
@@ -23,6 +23,7 @@ class Boid {
     position += velocity * dt;
     final double friction = 0.8;
     velocity -= velocity * friction;
+    acceleration = new Vector2(0.0, 0.0);
   }
   
   void separate(List<Boid> neighbors) {

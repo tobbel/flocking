@@ -2,7 +2,7 @@ part of flocking;
 
 class Flock {
   List<Boid> boids;
-  static const int NUM_BOIDS = 200;
+  static const int NUM_BOIDS = 10;
   
   Flock() {
     boids = new List<Boid>();
