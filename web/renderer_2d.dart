@@ -9,6 +9,7 @@ class Renderer2D {
     context.clearRect(0, 0, context.canvas.width, context.canvas.height);
     // Temp render boids
     flock.boids.forEach((b) {
+      // TODO: Move canvas to center, rotate, draw triangle (see fractals)
       context.fillRect(b.position.x, b.position.y, 2, 2);
       
       // Temp draw neighbor distance (made for a cool pattern!)
