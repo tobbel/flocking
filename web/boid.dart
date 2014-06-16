@@ -69,9 +69,17 @@ class Boid {
     }
     sumVelocity /= neighbors.length.toDouble();
 
-    //print('sumVel is $sumVelocity');
     // TODO: Unsure how to apply this, think about it.
-    acceleration += sumVelocity * 0.1;
+    sumVelocity.normalize();
+    sumVelocity *= 2.0;
+    sumVelocity -= velocity;
+
+    if (sumVelocity.length > 0.03)
+    {
+      sumVelocity.normalize();
+      sumVelocity *= 0.03;
+    }
+    acceleration += sumVelocity;
   }
   
   void cohese(List<Boid> neighbors) {
