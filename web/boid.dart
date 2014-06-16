@@ -10,7 +10,7 @@ class Boid {
 
   // TODO: Angle (double neighborhoodAngle = Math.PI / 3.0;)
   // 60 degrees in each direction backwards from angle.
-  
+
   Boid(this.position) {
     final double direction = Flocking.rand.nextDouble() * Math.PI * 2.0;
     acceleration = new Vector2(Math.sin(direction), Math.cos(direction));
@@ -21,9 +21,8 @@ class Boid {
     // TODO: Limit maxspeed etc.
     velocity += acceleration * dt;
     position += velocity * dt;
-    final double friction = 0.8;
+    final double friction = 0.1;
     velocity -= velocity * friction;
-    acceleration = new Vector2(0.0, 0.0);
   }
   
   void separate(List<Boid> neighbors) {
@@ -31,12 +30,32 @@ class Boid {
           return;
         
     // Calculate sum of all toNeighbor vectors. Negate and add to velocity.
+    Vector2 separation = new Vector2(0.0, 0.0);
     Vector2 sumTo = new Vector2(0.0, 0.0);
-    for (final n in neighbors) {
-      Vector2 toNeighbor = n.position - position;
-      sumTo += toNeighbor;
+    double count = 0.0;
+    for (final Boid n in neighbors) {
+      final Vector2 toNeighbor = n.position - position;
+      final double distance = toNeighbor.length;
+      if (distance <= 0) continue;
+      
+      count++;
+      sumTo += toNeighbor.normalized() / distance;
     }
-    acceleration -= sumTo * 0.005;
+    
+    if (count <= 0) return;
+    sumTo /= count;
+    sumTo.normalize();
+    final double maxSpeed = 2.0;
+    sumTo *= maxSpeed;
+    sumTo -= velocity;
+
+    if (sumTo.length > 0.03)
+    {
+      sumTo.normalize();
+      sumTo *= 0.03;
+    }
+    
+    acceleration -= sumTo;
   }
   
   void align(List<Boid> neighbors) {
@@ -45,13 +64,14 @@ class Boid {
     
     // Calculate average heading of neighbors. 
     Vector2 sumVelocity = new Vector2(0.0, 0.0);
-    for (final n in neighbors) {
+    for (final Boid n in neighbors) {
       sumVelocity += n.velocity;
     }
     sumVelocity /= neighbors.length.toDouble();
-    
+
+    //print('sumVel is $sumVelocity');
     // TODO: Unsure how to apply this, think about it.
-    acceleration += sumVelocity * 0.01;
+    acceleration += sumVelocity * 0.1;
   }
   
   void cohese(List<Boid> neighbors) {
@@ -70,7 +90,7 @@ class Boid {
   
   List<Boid> getNeighbors(List<Boid> boids) {
     List<Boid> neighbors = new List<Boid>();
-    for (final b in boids)
+    for (final Boid b in boids)
     {
       // TODO: Angle
       //Vector2 toNeighbor = b.position - position;
