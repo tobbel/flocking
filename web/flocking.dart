@@ -7,7 +7,7 @@ class Flocking {
   Renderer2D renderer;
   
   Flocking(CanvasElement canvas) {
-    flock = new Flock();
+    flock = new Flock(new Vector2(canvas.width.toDouble(), canvas.height.toDouble()));
     renderer = new Renderer2D(flock, canvas.context2D);    
   }
   
