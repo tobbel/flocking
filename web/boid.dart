@@ -1,8 +1,8 @@
 part of flocking;
 
 class Boid {
-  static const double NEIGHBORHOOD_DISTANCE = 10.0;
-  static const double NEIGHBORHOOD_DISTANCE_SQUARED = 100.0;
+  static const double NEIGHBORHOOD_DISTANCE = 20.0;
+  static const double NEIGHBORHOOD_DISTANCE_SQUARED = 400.0;
   
   Vector2 position;
   Vector2 velocity;
@@ -45,14 +45,14 @@ class Boid {
     if (count <= 0) return;
     sumTo /= count;
     sumTo.normalize();
-    final double maxSpeed = 2.0;
+    final double maxSpeed = 20.0;
     sumTo *= maxSpeed;
     sumTo -= velocity;
 
-    if (sumTo.length > 0.03)
+    if (sumTo.length > 0.75)
     {
       sumTo.normalize();
-      sumTo *= 0.03;
+      sumTo *= 0.75;
     }
     
     acceleration -= sumTo;
@@ -71,13 +71,13 @@ class Boid {
 
     // TODO: Unsure how to apply this, think about it.
     sumVelocity.normalize();
-    sumVelocity *= 2.0;
+    sumVelocity *= 20.0;
     sumVelocity -= velocity;
 
-    if (sumVelocity.length > 0.03)
+    if (sumVelocity.length > 0.3)
     {
       sumVelocity.normalize();
-      sumVelocity *= 0.03;
+      sumVelocity *= 0.3;
     }
     acceleration += sumVelocity;
   }
