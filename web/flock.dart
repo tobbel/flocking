@@ -34,7 +34,6 @@ class Flock {
   }
   
   void wrapEdges() {
-    
     // Wrap all boids around edges
     for (Boid b in boids) {
       if (b.position.x < 0) b.position.x = worldSize.x + b.position.x;
@@ -42,5 +41,9 @@ class Flock {
       if (b.position.x > worldSize.x) b.position.x = worldSize.x - b.position.x;
       if (b.position.y > worldSize.y) b.position.y = worldSize.y - b.position.y;
     }
+  }
+  
+  void addBoid(Vector2 position) {
+    boids.add(new Boid(position));
   }
 }

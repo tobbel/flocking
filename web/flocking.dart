@@ -18,4 +18,8 @@ class Flocking {
     flock.update(dt);
     renderer.draw(dt);
   }
+  
+  void mouseDown(Vector2 position) {
+    flock.addBoid(position);
+  }
 }
