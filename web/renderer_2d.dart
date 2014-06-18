@@ -24,6 +24,13 @@ class Renderer2D {
       context.stroke();
       context.lineTo(left.x, left.y);
       context.stroke();
+      final double speedFactor = b.velocity.length / 40.0;
+      final String redColor = (255 * speedFactor).toInt().toString();
+      final String greenColor = (255 * (1 - speedFactor)).toInt().toString();
+      final String color = 'rgba(' + redColor +', '+greenColor+', 0, 1.0)';
+      context.fillStyle = color;
+      context.closePath();
+      context.fill();
     });
   }
 }
