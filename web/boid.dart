@@ -49,10 +49,10 @@ class Boid {
     sumTo *= maxSpeed;
     sumTo -= velocity;
 
-    if (sumTo.length > 0.75)
+    if (sumTo.length > 0.8)
     {
       sumTo.normalize();
-      sumTo *= 0.75;
+      sumTo *= 0.8;
     }
     
     acceleration -= sumTo;
@@ -91,7 +91,7 @@ class Boid {
     }
     avgPosition /= neighbors.length.toDouble();
     final Vector2 toAvgPosition = avgPosition - position;
-    acceleration += toAvgPosition * 0.1;
+    acceleration += toAvgPosition * 0.3;
   }
   
   List<Boid> getNeighbors(List<Boid> boids) {
