@@ -65,19 +65,17 @@ class Boid {
     // Calculate average heading of neighbors. 
     Vector2 sumVelocity = new Vector2(0.0, 0.0);
     for (final Boid n in neighbors) {
-      sumVelocity += n.velocity;
+      sumVelocity += n.velocity.normalized();
     }
     sumVelocity /= neighbors.length.toDouble();
-
-    // TODO: Unsure how to apply this, think about it.
     sumVelocity.normalize();
     sumVelocity *= 20.0;
     sumVelocity -= velocity;
 
-    if (sumVelocity.length > 0.3)
+    if (sumVelocity.length > 0.5)
     {
       sumVelocity.normalize();
-      sumVelocity *= 0.3;
+      sumVelocity *= 0.5;
     }
     acceleration += sumVelocity;
   }
@@ -93,7 +91,7 @@ class Boid {
     }
     avgPosition /= neighbors.length.toDouble();
     final Vector2 toAvgPosition = avgPosition - position;
-    acceleration += toAvgPosition * 0.01;
+    acceleration += toAvgPosition * 0.1;
   }
   
   List<Boid> getNeighbors(List<Boid> boids) {
