@@ -45,14 +45,14 @@ class Boid {
     if (count <= 0) return;
     sumTo /= count;
     sumTo.normalize();
-    final double maxSpeed = 20.0;
+    final double maxSpeed = 100.0;
     sumTo *= maxSpeed;
     sumTo -= velocity;
 
-    if (sumTo.length > 0.8)
+    if (sumTo.length > 2.0)
     {
       sumTo.normalize();
-      sumTo *= 0.8;
+      sumTo *= 2.0;
     }
     
     acceleration -= sumTo;
@@ -69,13 +69,13 @@ class Boid {
     }
     sumVelocity /= neighbors.length.toDouble();
     sumVelocity.normalize();
-    sumVelocity *= 20.0;
+    sumVelocity *= 30.0;
     sumVelocity -= velocity;
 
-    if (sumVelocity.length > 0.5)
+    if (sumVelocity.length > 0.7)
     {
       sumVelocity.normalize();
-      sumVelocity *= 0.5;
+      sumVelocity *= 0.7;
     }
     acceleration += sumVelocity;
   }
