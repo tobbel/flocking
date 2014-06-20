@@ -1,8 +1,8 @@
 part of flocking;
 
 class Boid {
-  static const double NEIGHBORHOOD_DISTANCE = 20.0;
-  static const double NEIGHBORHOOD_DISTANCE_SQUARED = 400.0;
+  static const double NEIGHBORHOOD_DISTANCE = 5.0;
+  static const double NEIGHBORHOOD_DISTANCE_SQUARED = 25.0;
   
   Vector2 position;
   Vector2 velocity;
@@ -38,6 +38,7 @@ class Boid {
       final double distance = toNeighbor.length;
       if (distance <= 0) continue;
       
+      //position -= toNeighbor * 2.0;
       count++;
       sumTo += toNeighbor.normalized() / distance;
     }
@@ -55,7 +56,8 @@ class Boid {
       sumTo *= 2.0;
     }
     
-    acceleration -= sumTo;
+    // acceleration -= sumTo;
+    position -= sumTo * 2.0;
   }
   
   void align(List<Boid> neighbors) {
