@@ -22,4 +22,16 @@ class Flocking {
   void mouseDown(Vector2 position) {
     flock.addBoid(position);
   }
+
+  void setSeparationWeight(double weight) {
+    //TODO
+  }
+  
+  void setAlignmentWeight(double weight) {
+    //TODO    
+  }
+  
+  void setCohesionWeight(double weight) {
+    //TODO    
+  }
 }
