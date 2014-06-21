@@ -55,7 +55,7 @@ void init() {
 }
 
 void inputChanged(Event e) {
-  RangeInputElement changed = querySelector('#${e.target.id}');
+  RangeInputElement changed = querySelector('#${(e.target as RangeInputElement).id}');
   String val;
   if (changed == separationInput) {
      val = separationInput.value;
