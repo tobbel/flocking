@@ -24,14 +24,14 @@ class Flocking {
   }
 
   void setSeparationWeight(double weight) {
-    //TODO
+    Boid.separationWeight = weight;
   }
   
   void setAlignmentWeight(double weight) {
-    //TODO    
+    Boid.alignmentWeight = weight;
   }
   
-  void setCohesionWeight(double weight) {
-    //TODO    
+  void setCohesionWeight(double weight) {    
+    Boid.cohesionWeight = weight;
   }
 }

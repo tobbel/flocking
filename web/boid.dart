@@ -1,11 +1,17 @@
 part of flocking;
 
 class Boid {
-  static const double NEIGHBORHOOD_DISTANCE = 5.0;
-  static const double NEIGHBORHOOD_DISTANCE_SQUARED = 25.0;
+  static const double NEIGHBORHOOD_DISTANCE = 100.0;
+  static const double NEIGHBORHOOD_DISTANCE_SQUARED = 1000.0;
   
-  static const double MAX_SPEED = 2.0;
-  static const double MAX_ACCELERATION = 0.03;
+  static const double MAX_SPEED = 200.0;
+  static const double MAX_ACCELERATION = 1.3;
+  
+  static double separationWeight = 1.0;
+  static double alignmentWeight = 1.0;
+  static double cohesionWeight = 1.0;
+  
+  Vector2 avgCenter = new Vector2(0.0, 0.0);
   
   Vector2 position;
   Vector2 velocity;
@@ -32,11 +38,8 @@ class Boid {
   
   void update(double dt) {
     velocity += acceleration * dt;
-    // Limit velocity by MAX_SPEED
     limit(velocity, MAX_SPEED);
     position += velocity * dt;
-    //final double friction = 0.1;
-    //velocity -= velocity * friction;
     acceleration *= 0.0;
   }
   
@@ -49,6 +52,7 @@ class Boid {
     Vector2 sumTo = new Vector2(0.0, 0.0);
     double count = 0.0;
     for (final Boid n in neighbors) {
+      if (n == this) continue;
       final Vector2 toNeighbor = n.position - position;
       final double distance = toNeighbor.length;
       if (distance <= 0) continue;
@@ -58,19 +62,19 @@ class Boid {
     }
     
     if (count <= 0) return;
+    avgCenter = sumTo;
     sumTo /= count;
     sumTo.normalize();
-    final double maxSpeed = 100.0;
-    sumTo *= maxSpeed;
+    sumTo *= MAX_SPEED;
     sumTo -= velocity;
 
-    if (sumTo.length > 2.0)
+    if (sumTo.length > MAX_ACCELERATION)
     {
       sumTo.normalize();
-      sumTo *= 2.0;
+      sumTo *= MAX_ACCELERATION;
     }
     
-    acceleration -= sumTo;
+    acceleration -= sumTo * separationWeight;
   }
   
   void align(List<Boid> neighbors) {
@@ -80,19 +84,20 @@ class Boid {
     // Calculate average heading of neighbors. 
     Vector2 sumVelocity = new Vector2(0.0, 0.0);
     for (final Boid n in neighbors) {
+      if (n == this) continue;
       sumVelocity += n.velocity.normalized();
     }
     sumVelocity /= neighbors.length.toDouble();
     sumVelocity.normalize();
-    sumVelocity *= 30.0;
+    sumVelocity *= MAX_SPEED;
     sumVelocity -= velocity;
 
-    if (sumVelocity.length > 0.7)
+    if (sumVelocity.length > MAX_ACCELERATION)
     {
       sumVelocity.normalize();
-      sumVelocity *= 0.7;
+      sumVelocity *= MAX_ACCELERATION;
     }
-    acceleration += sumVelocity;
+    acceleration += sumVelocity * alignmentWeight;
   }
   
   void cohese(List<Boid> neighbors) {
@@ -102,11 +107,13 @@ class Boid {
     // Calculate average position of neighbors. Steer towards it.
     Vector2 avgPosition = new Vector2(0.0, 0.0);
     for (final n in neighbors) {
+      if (n == this) continue;
       avgPosition += n.position;
     }
+    // TODO: Only cohesion causes everyone to go towards origo, so this is probably wrong
     avgPosition /= neighbors.length.toDouble();
     final Vector2 toAvgPosition = avgPosition - position;
-    acceleration += toAvgPosition * 0.3;
+    acceleration += toAvgPosition * cohesionWeight;
   }
   
   List<Boid> getNeighbors(List<Boid> boids) {

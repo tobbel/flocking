@@ -2,7 +2,7 @@ part of flocking;
 
 class Flock {
   List<Boid> boids;
-  static const int NUM_BOIDS = 100;
+  static const int NUM_BOIDS = 500;
   final Vector2 worldSize;
   
   Flock(this.worldSize) {
@@ -21,9 +21,9 @@ class Flock {
     boids.forEach((b) {
       final List<Boid> neighbors = b.getNeighbors(boids);
       
-      //b.separate(neighbors);
+      b.separate(neighbors);
       b.align(neighbors);
-      //b.cohese(neighbors);
+      b.cohese(neighbors);
     });
     
     boids.forEach((b) => b.update(dt));

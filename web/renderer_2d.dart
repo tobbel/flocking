@@ -16,6 +16,19 @@ class Renderer2D {
       Vector2 right = b.position - perp;
       Vector2 front = b.position + dir * 30.0;
       
+//      context.beginPath();
+//      context.arc(b.position.x, b.position.y, 100.0, 0, Math.PI * 2.0);
+//      context.closePath();
+//      context.stroke();
+      
+//      if (b.avgCenter.x != 0.0 && b.avgCenter.y != 0.0) {
+//        context.beginPath();
+//        context.moveTo(b.position.x, b.position.y);
+//        context.lineTo(b.position.x + b.avgCenter.x, b.position.y + b.avgCenter.y);
+//        context.stroke();
+//        context.closePath();
+//      }
+      
       context.beginPath();
       context.moveTo(left.x, left.y);
       context.lineTo(right.x, right.y);
@@ -24,7 +37,7 @@ class Renderer2D {
       context.stroke();
       context.lineTo(left.x, left.y);
       context.stroke();
-      final double speedFactor = b.velocity.length / 40.0;
+      final double speedFactor = b.velocity.length / Boid.MAX_SPEED * 0.5;
       final String redColor = (255 * speedFactor).toInt().toString();
       final String greenColor = (255 * (1 - speedFactor)).toInt().toString();
       final String color = 'rgba(' + redColor +', '+greenColor+', 0, 1.0)';
