@@ -18,14 +18,12 @@ class Flock {
   // 2. Alignment: Steer towards the average heading of local flockmates.
   // 3. Cohesion: Steer to move toward the average position of local flockmates.
   void update(double dt) {
-    // TODO: Calculate separation, alignment, cohesion for all boids. Change velocity vector.
-    // TODO: Apply velocity for all boids.
     boids.forEach((b) {
       final List<Boid> neighbors = b.getNeighbors(boids);
       
-      b.separate(neighbors);
+      //b.separate(neighbors);
       b.align(neighbors);
-      b.cohese(neighbors);
+      //b.cohese(neighbors);
     });
     
     boids.forEach((b) => b.update(dt));

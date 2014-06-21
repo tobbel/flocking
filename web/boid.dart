@@ -4,6 +4,9 @@ class Boid {
   static const double NEIGHBORHOOD_DISTANCE = 5.0;
   static const double NEIGHBORHOOD_DISTANCE_SQUARED = 25.0;
   
+  static const double MAX_SPEED = 2.0;
+  static const double MAX_ACCELERATION = 0.03;
+  
   Vector2 position;
   Vector2 velocity;
   Vector2 acceleration;
@@ -17,12 +20,24 @@ class Boid {
     velocity = new Vector2(0.0, 0.0);
   }
   
+  // This should be somewhere else, putting it here for now
+  void limit(Vector2 vector, double maxLength) {
+    // If vec lengthSq > maxLengthSq, limit to maxLength
+    if ((vector.length2 > 0.0) && (vector.length2 > (maxLength * maxLength))) {
+      double ratio = maxLength / vector.length;
+      vector.x *= ratio;
+      vector.y *= ratio;
+    }
+  }
+  
   void update(double dt) {
-    // TODO: Limit maxspeed etc.
     velocity += acceleration * dt;
+    // Limit velocity by MAX_SPEED
+    limit(velocity, MAX_SPEED);
     position += velocity * dt;
-    final double friction = 0.1;
-    velocity -= velocity * friction;
+    //final double friction = 0.1;
+    //velocity -= velocity * friction;
+    acceleration *= 0.0;
   }
   
   void separate(List<Boid> neighbors) {
@@ -38,7 +53,6 @@ class Boid {
       final double distance = toNeighbor.length;
       if (distance <= 0) continue;
       
-      //position -= toNeighbor * 2.0;
       count++;
       sumTo += toNeighbor.normalized() / distance;
     }
@@ -56,8 +70,7 @@ class Boid {
       sumTo *= 2.0;
     }
     
-    // acceleration -= sumTo;
-    position -= sumTo * 2.0;
+    acceleration -= sumTo;
   }
   
   void align(List<Boid> neighbors) {
