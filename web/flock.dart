@@ -2,7 +2,7 @@ part of flocking;
 
 class Flock {
   List<Boid> boids;
-  static const int NUM_BOIDS = 500;
+  static const int NUM_BOIDS = 50;
   final Vector2 worldSize;
   
   Flock(this.worldSize) {

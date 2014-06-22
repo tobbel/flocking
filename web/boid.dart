@@ -28,11 +28,9 @@ class Boid {
   
   // This should be somewhere else, putting it here for now
   void limit(Vector2 vector, double maxLength) {
-    // If vec lengthSq > maxLengthSq, limit to maxLength
-    if ((vector.length2 > 0.0) && (vector.length2 > (maxLength * maxLength))) {
-      double ratio = maxLength / vector.length;
-      vector.x *= ratio;
-      vector.y *= ratio;
+    if (vector.length2 > maxLength * maxLength) {
+      vector.normalize();
+      vector *= maxLength;
     }
   }
   
@@ -40,7 +38,9 @@ class Boid {
     velocity += acceleration * dt;
     limit(velocity, MAX_SPEED);
     position += velocity * dt;
-    acceleration *= 0.0;
+    
+    // TODO: Clearing acc in renderer to render acc
+    //acceleration *= 0.0;
   }
   
   void separate(List<Boid> neighbors) {
@@ -108,12 +108,18 @@ class Boid {
     Vector2 avgPosition = new Vector2(0.0, 0.0);
     for (final n in neighbors) {
       if (n == this) continue;
-      avgPosition += n.position;
+      avgPosition += n.position;// - position;
     }
     // TODO: Only cohesion causes everyone to go towards origo, so this is probably wrong
     avgPosition /= neighbors.length.toDouble();
-    final Vector2 toAvgPosition = avgPosition - position;
-    acceleration += toAvgPosition * cohesionWeight;
+    Vector2 toAvgPosition = avgPosition - position;
+    toAvgPosition.normalize();
+    toAvgPosition *= MAX_SPEED;
+    Vector2 steer = toAvgPosition - velocity;
+    limit(steer, MAX_ACCELERATION);
+    acceleration += steer * cohesionWeight;
+    
+    //acceleration += toAvgPosition * cohesionWeight;
   }
   
   List<Boid> getNeighbors(List<Boid> boids) {
