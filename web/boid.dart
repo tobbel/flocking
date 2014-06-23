@@ -1,8 +1,8 @@
 part of flocking;
 
 class Boid {
-  static const double NEIGHBORHOOD_DISTANCE = 100.0;
-  static const double NEIGHBORHOOD_DISTANCE_SQUARED = 1000.0;
+  static const double NEIGHBORHOOD_DISTANCE = 200.0;
+  static const double NEIGHBORHOOD_DISTANCE_SQUARED = 4000.0;
   
   static const double MAX_SPEED = 200.0;
   static const double MAX_ACCELERATION = 1.3;
@@ -108,18 +108,19 @@ class Boid {
     Vector2 avgPosition = new Vector2(0.0, 0.0);
     for (final n in neighbors) {
       if (n == this) continue;
-      avgPosition += n.position;// - position;
+      avgPosition += n.position;
     }
-    // TODO: Only cohesion causes everyone to go towards origo, so this is probably wrong
+    if (avgPosition.x == 0.0 && avgPosition.y == 0.0) {
+      return;
+    }
+
     avgPosition /= neighbors.length.toDouble();
-    Vector2 toAvgPosition = avgPosition - position;
-    toAvgPosition.normalize();
-    toAvgPosition *= MAX_SPEED;
-    Vector2 steer = toAvgPosition - velocity;
+    avgPosition.normalize();
+    avgPosition *= MAX_SPEED;
+    Vector2 steer = avgPosition - velocity;
+    
     limit(steer, MAX_ACCELERATION);
     acceleration += steer * cohesionWeight;
-    
-    //acceleration += toAvgPosition * cohesionWeight;
   }
   
   List<Boid> getNeighbors(List<Boid> boids) {
