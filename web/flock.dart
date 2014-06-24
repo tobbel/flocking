@@ -17,6 +17,7 @@ class Flock {
   // 1. Separation: Steer to avoid crowding local flockmates.
   // 2. Alignment: Steer towards the average heading of local flockmates.
   // 3. Cohesion: Steer to move toward the average position of local flockmates.
+  double logTimer = 1.0;
   void update(double dt) {
     boids.forEach((b) {
       final List<Boid> neighbors = b.getNeighbors(boids);
@@ -27,6 +28,20 @@ class Flock {
     });
     
     boids.forEach((b) => b.update(dt));
+    
+    // Get fastest boid
+    double maxVelocity = 0.0;
+    boids.forEach((b) {
+      if (b.velocity.length > maxVelocity) maxVelocity = b.velocity.length;
+    });
+    
+    if (logTimer > 0.0) {
+      logTimer -= dt;
+      if (logTimer <= 0.0) {
+        logTimer = 1.0;
+        print('Max Velocity: $maxVelocity');
+      }
+    }
     
     wrapEdges();
   }
