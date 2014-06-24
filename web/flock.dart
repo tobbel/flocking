@@ -29,17 +29,20 @@ class Flock {
     
     boids.forEach((b) => b.update(dt));
     
-    // Get fastest boid
-    double maxVelocity = 0.0;
-    boids.forEach((b) {
-      if (b.velocity.length > maxVelocity) maxVelocity = b.velocity.length;
-    });
-    
     if (logTimer > 0.0) {
       logTimer -= dt;
       if (logTimer <= 0.0) {
         logTimer = 1.0;
-        print('Max Velocity: $maxVelocity');
+        // Get fastest boid
+        double maxVelocity = 0.0;
+        double maxAcceleration = 0.0;
+        boids.forEach((b) {
+          if (b.velocity.length > maxVelocity) maxVelocity = b.velocity.length;
+          if (b.acceleration.length > maxAcceleration) maxAcceleration = b.acceleration.length;
+        });
+        print('------------------------------');
+        print('Max Velocity    : $maxVelocity');
+        print('Max Acceleration: $maxAcceleration');
       }
     }
     

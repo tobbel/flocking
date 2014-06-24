@@ -4,8 +4,8 @@ class Boid {
   static const double NEIGHBORHOOD_DISTANCE = 200.0;
   static const double NEIGHBORHOOD_DISTANCE_SQUARED = 4000.0;
   
-  static const double MAX_SPEED = 200.0;
-  static const double MAX_ACCELERATION = 1.3;
+  static const double MAX_SPEED = 100.0;
+  static const double MAX_ACCELERATION = 30.0;
   
   static double separationWeight = 1.0;
   static double alignmentWeight = 1.0;
