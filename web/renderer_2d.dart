@@ -47,12 +47,13 @@ class Renderer2D {
       context.closePath();
       context.fill();
       
-      context.beginPath();
-      context.moveTo(b.position.x, b.position.y);
-      context.lineTo(b.position.x + b.acceleration.x * 10.0, b.position.y + b.acceleration.y * 10.0);
-      context.stroke();
-      context.closePath();
-      
+      if (b.id == 0) {
+        context.beginPath();
+        context.moveTo(b.position.x, b.position.y);
+        context.lineTo(b.position.x + b.acceleration.x * 10.0, b.position.y + b.acceleration.y * 10.0);
+        context.stroke();
+        context.closePath();
+      }
       b.acceleration *= 0.0;
     });
   }
