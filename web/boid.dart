@@ -20,6 +20,10 @@ class Boid {
   Vector2 velocity;
   Vector2 acceleration;
 
+  Vector2 separationStrength = new Vector2(0.0, 0.0);
+  Vector2 alignmentStrength = new Vector2(0.0, 0.0);
+  Vector2 cohesionStrength = new Vector2(0.0, 0.0);
+
   // TODO: Angle (double neighborhoodAngle = Math.PI / 3.0;)
   // 60 degrees in each direction backwards from angle.
 
@@ -76,7 +80,7 @@ class Boid {
       sumTo.normalize();
       sumTo *= MAX_ACCELERATION;
     }
-    
+    separationStrength = sumTo * separationWeight;
     acceleration -= sumTo * separationWeight;
   }
   
@@ -100,6 +104,7 @@ class Boid {
       sumVelocity.normalize();
       sumVelocity *= MAX_ACCELERATION;
     }
+    alignmentStrength = sumVelocity * alignmentWeight;
     acceleration += sumVelocity * alignmentWeight;
   }
   
@@ -123,6 +128,7 @@ class Boid {
     Vector2 steer = avgPosition - velocity;
     
     limit(steer, MAX_ACCELERATION);
+    cohesionStrength = steer * cohesionWeight;
     acceleration += steer * cohesionWeight;
   }
   
