@@ -9,7 +9,7 @@ class Flock {
     boids = new List<Boid>();
     Vector2 startPosition = new Vector2(100.0, 100.0);
     for (int i = 0; i < NUM_BOIDS; i++) {
-      boids.add(new Boid(startPosition));
+      boids.add(new Boid(startPosition, i));
     }
   }
   
@@ -60,6 +60,6 @@ class Flock {
   }
   
   void addBoid(Vector2 position) {
-    boids.add(new Boid(position));
+    boids.add(new Boid(position, boids.length));
   }
 }

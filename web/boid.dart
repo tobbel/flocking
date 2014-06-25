@@ -5,11 +5,14 @@ class Boid {
   static const double NEIGHBORHOOD_DISTANCE_SQUARED = 4000.0;
   
   static const double MAX_SPEED = 100.0;
-  static const double MAX_ACCELERATION = 30.0;
+  static const double MAX_ACCELERATION = 5.0;
   
   static double separationWeight = 1.0;
   static double alignmentWeight = 1.0;
   static double cohesionWeight = 1.0;
+  
+  // TODO: Static id counter, class istf int
+  int id;
   
   Vector2 avgCenter = new Vector2(0.0, 0.0);
   
@@ -20,7 +23,7 @@ class Boid {
   // TODO: Angle (double neighborhoodAngle = Math.PI / 3.0;)
   // 60 degrees in each direction backwards from angle.
 
-  Boid(this.position) {
+  Boid(this.position, this.id) {
     final double direction = Flocking.rand.nextDouble() * Math.PI * 2.0;
     acceleration = new Vector2(Math.sin(direction), Math.cos(direction));
     velocity = new Vector2(0.0, 0.0);
