@@ -48,9 +48,9 @@ class Renderer2D {
       context.fill();
       
       if (b.id == 0) {
-        // TODO: Colors don't work
+        // TODO: Went to the beach!
         // Separation: red
-        context.fillStyle = 'red';
+        context.strokeStyle = 'red';
         context.beginPath();
         context.moveTo(b.position.x, b.position.y);
         context.lineTo(b.position.x + b.separationStrength.x * 10.0, b.position.y + b.separationStrength.y * 10.0);
@@ -58,7 +58,7 @@ class Renderer2D {
         context.closePath();
 
         // Alignment: blue
-        context.fillStyle = 'blue';
+        context.strokeStyle = 'blue';
         context.beginPath();
         context.moveTo(b.position.x, b.position.y);
         context.lineTo(b.position.x + b.alignmentStrength.x * 10.0, b.position.y + b.alignmentStrength.y * 10.0);
@@ -66,7 +66,7 @@ class Renderer2D {
         context.closePath();
 
         // Cohesion: green
-        context.fillStyle = 'green';
+        context.strokeStyle = 'yellow';
         context.beginPath();
         context.moveTo(b.position.x, b.position.y);
         context.lineTo(b.position.x + b.cohesionStrength.x * 10.0, b.position.y + b.cohesionStrength.y * 10.0);
@@ -74,7 +74,7 @@ class Renderer2D {
         context.closePath();
         
         // All together now
-        context.fillStyle = 'black';
+        context.strokeStyle = 'black';
         context.beginPath();
         context.moveTo(b.position.x, b.position.y);
         context.lineTo(b.position.x + b.acceleration.x * 10.0, b.position.y + b.acceleration.y * 10.0);
