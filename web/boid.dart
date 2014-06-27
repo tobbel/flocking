@@ -75,11 +75,7 @@ class Boid {
     sumTo *= MAX_SPEED;
     sumTo -= velocity;
 
-    if (sumTo.length > MAX_ACCELERATION)
-    {
-      sumTo.normalize();
-      sumTo *= MAX_ACCELERATION;
-    }
+    limit(sumTo, MAX_ACCELERATION);
     separationStrength = sumTo * separationWeight;
     acceleration -= sumTo * separationWeight;
   }
@@ -99,11 +95,7 @@ class Boid {
     sumVelocity *= MAX_SPEED;
     sumVelocity -= velocity;
 
-    if (sumVelocity.length > MAX_ACCELERATION)
-    {
-      sumVelocity.normalize();
-      sumVelocity *= MAX_ACCELERATION;
-    }
+    limit(sumVelocity, MAX_ACCELERATION);
     alignmentStrength = sumVelocity * alignmentWeight;
     acceleration += sumVelocity * alignmentWeight;
   }
