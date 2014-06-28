@@ -48,7 +48,11 @@ class Renderer2D {
       context.fill();
       
       if (b.id == 0) {
-        // TODO: Went to the beach!
+        context.strokeStyle = 'black';
+        context.beginPath();
+        context.arc(b.position.x, b.position.y, Boid.NEIGHBORHOOD_DISTANCE, 0, 2 * Math.PI);
+        context.stroke();
+        context.closePath();
         // Separation: red
         context.strokeStyle = 'red';
         context.beginPath();

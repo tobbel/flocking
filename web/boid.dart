@@ -1,8 +1,7 @@
 part of flocking;
 
 class Boid {
-  static const double NEIGHBORHOOD_DISTANCE = 200.0;
-  static const double NEIGHBORHOOD_DISTANCE_SQUARED = 4000.0;
+  static const double NEIGHBORHOOD_DISTANCE = 10.0;
   
   static const double MAX_SPEED = 100.0;
   static const double MAX_ACCELERATION = 5.0;
@@ -133,8 +132,8 @@ class Boid {
       //final double angle = Math.atan2(toNeighbor.y, toNeighbor.x);
       
       // DistanceTo
-      final double distanceTo = position.distanceToSquared(b.position);
-      if (distanceTo > NEIGHBORHOOD_DISTANCE_SQUARED)
+      final double distanceTo = position.distanceTo(b.position);
+      if (distanceTo > NEIGHBORHOOD_DISTANCE)
         continue;
       
       neighbors.add(b);
