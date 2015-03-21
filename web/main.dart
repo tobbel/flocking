@@ -11,7 +11,6 @@ part 'boid.dart';
 part 'flock.dart';
 part 'flocking.dart';
 part 'renderer_2d.dart';
-part 'ui.dart';
 
 Flocking flocking;
 CanvasElement canvas;
