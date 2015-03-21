@@ -6,6 +6,10 @@ class Flock {
   Vector2 worldSize;
   
   Flock(this.worldSize) {
+    reset();
+  }
+  
+  void reset() {
     boids = new List<Boid>();
     for (int i = 0; i < NUM_BOIDS; i++) {
       Vector2 startPosition = new Vector2(Flocking.rand.nextDouble() * worldSize.x, Flocking.rand.nextDouble() * worldSize.y);

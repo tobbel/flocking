@@ -4,6 +4,7 @@ import 'dart:html';
 import 'dart:math' as Math;
 import 'dart:async';
 
+import 'package:datgui/datgui.dart' as dat;
 import 'package:vector_math/vector_math.dart';
 
 part 'boid.dart';
