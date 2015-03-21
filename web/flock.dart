@@ -2,7 +2,7 @@ part of flocking;
 
 class Flock {
   List<Boid> boids;
-  static const int NUM_BOIDS = 50;
+  static const int NUM_BOIDS = 500;
   Vector2 worldSize;
   
   Flock(this.worldSize) {
@@ -29,7 +29,7 @@ class Flock {
       Vector2 separationVector = b.separate(neighbors);
       Vector2 cohesionVector = b.cohese(neighbors);
       Vector2 wallAvoidance = CalculateWallAvoidance(b);
-      b.velocity += (alignVector * Boid.alignmentWeight + separationVector * Boid.separationWeight + cohesionVector * Boid.cohesionWeight);
+      b.velocity += (alignVector * Boid.alignmentWeight.toDouble() + separationVector * Boid.separationWeight.toDouble() + cohesionVector * Boid.cohesionWeight.toDouble());
       b.velocity += wallAvoidance * 0.5;
       
     });
