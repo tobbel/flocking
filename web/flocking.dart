@@ -5,10 +5,12 @@ class Flocking {
   
   Flock flock;
   Renderer2D renderer;
+  UI ui;
   
   Flocking(CanvasElement canvas) {
     flock = new Flock(new Vector2(canvas.width.toDouble(), canvas.height.toDouble()));
-    renderer = new Renderer2D(flock, canvas.context2D);    
+    renderer = new Renderer2D(flock, canvas.context2D);
+    ui = new UI(flock, canvas);
   }
   
   void start() {
@@ -17,6 +19,7 @@ class Flocking {
   void update(double dt) {
     flock.update(dt);
     renderer.draw(dt);
+    ui.draw(dt);
   }
   
   void mouseDown(Vector2 position) {
@@ -33,5 +36,9 @@ class Flocking {
   
   void setCohesionWeight(double weight) {    
     Boid.cohesionWeight = weight;
+  }
+  
+  void setWorldSize(Vector2 size) {
+    flock.worldSize = size;
   }
 }

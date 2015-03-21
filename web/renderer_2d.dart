@@ -7,6 +7,10 @@ class Renderer2D {
   
   void draw(double dt) {
     context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+    context.fillStyle = 'black';
+    context.fillRect(40, 40, context.canvas.width - 90, context.canvas.height - 90);
+    context.fillStyle = 'white';
+    context.fillRect(41, 41, context.canvas.width - 92, context.canvas.height - 92);
     // Temp render boids
     flock.boids.forEach((b) {
       Vector2 dir = b.velocity.normalized();

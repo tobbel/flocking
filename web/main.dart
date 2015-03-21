@@ -10,6 +10,7 @@ part 'boid.dart';
 part 'flock.dart';
 part 'flocking.dart';
 part 'renderer_2d.dart';
+part 'ui.dart';
 
 Flocking flocking;
 CanvasElement canvas;
@@ -29,26 +30,29 @@ void main() {
 
 void init() {
   canvas = querySelector('#flockingCanvas');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
   flocking = new Flocking(canvas);
 
+  window.onResize.listen(onResize);
   canvas.onMouseDown.listen(mouseDown);
   
   // Input etc.
-  separationInput = querySelector('#separationWeight');
-  alignmentInput = querySelector('#alignmentWeight');
-  cohesionInput = querySelector('#cohesionWeight');
-
-  separationLabel = querySelector('#separationLabel');
-  alignmentLabel = querySelector('#alignmentLabel');
-  cohesionLabel = querySelector('#cohesionLabel');
-  
-  separationLabel.text = separationInput.value;
-  alignmentLabel.text = alignmentInput.value;
-  cohesionLabel.text = cohesionInput.value;
-
-  separationInput.onInput.listen(inputChanged);
-  alignmentInput.onInput.listen(inputChanged);
-  cohesionInput.onInput.listen(inputChanged);
+//  separationInput = querySelector('#separationWeight');
+//  alignmentInput = querySelector('#alignmentWeight');
+//  cohesionInput = querySelector('#cohesionWeight');
+//
+//  separationLabel = querySelector('#separationLabel');
+//  alignmentLabel = querySelector('#alignmentLabel');
+//  cohesionLabel = querySelector('#cohesionLabel');
+//  
+//  separationLabel.text = separationInput.value;
+//  alignmentLabel.text = alignmentInput.value;
+//  cohesionLabel.text = cohesionInput.value;
+//
+//  separationInput.onInput.listen(inputChanged);
+//  alignmentInput.onInput.listen(inputChanged);
+//  cohesionInput.onInput.listen(inputChanged);
   
   scheduleMicrotask(flocking.start);
   window.animationFrame.then(update);
@@ -107,6 +111,14 @@ void mouseDown(MouseEvent e) {
   flocking.mouseDown(getMouseCanvasPosition(e));
 }
 
+void onResize(Event e) {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  
+  flocking.setWorldSize(new Vector2(canvas.width.toDouble(), canvas.height.toDouble()));
+}
+
+// Note: Not needed now since canvas fills entire window (kept for posterity)
 Vector2 getMouseCanvasPosition(MouseEvent e) {
   Rectangle rect = canvas.getBoundingClientRect();
 
