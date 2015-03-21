@@ -3,7 +3,7 @@ part of flocking;
 class Boid {
   static const double NEIGHBORHOOD_DISTANCE = 100.0;
   
-  static const double MAX_SPEED = 250.0;
+  static const double MAX_SPEED = 150.0;
   
   static double separationWeight = 1.0;
   static double alignmentWeight = 1.0;
@@ -26,7 +26,7 @@ class Boid {
 
   Boid(this.position, this.id) {
     final double direction = Flocking.rand.nextDouble() * Math.PI * 2.0;
-    velocity = new Vector2(Flocking.rand.nextDouble() * 2 - 1, Flocking.rand.nextDouble() * 2 - 1);
+    velocity = new Vector2(Flocking.rand.nextDouble() * 100 - 50, Flocking.rand.nextDouble() * 100 - 50);
   }
   
   // This should be somewhere else, putting it here for now
@@ -54,7 +54,7 @@ class Boid {
     
     totalSeparation.x /= neighbors.length;
     totalSeparation.y /= neighbors.length;
-    totalSeparation *= 1.0;
+    totalSeparation *= -1.0;
     totalSeparation.normalize();
     
     return totalSeparation;
