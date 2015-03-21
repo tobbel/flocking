@@ -5,9 +5,9 @@ class Boid {
   
   static const double MAX_SPEED = 150.0;
   
-  static double separationWeight = 0.1;
-  static double alignmentWeight = 0.1;
-  static double cohesionWeight = 0.1;
+  static num separationWeight = 0.1;
+  static num alignmentWeight = 0.1;
+  static num cohesionWeight = 0.1;
   
   // TODO: Static id counter, class istf int
   int id;

@@ -3,8 +3,13 @@ part of flocking;
 
 class DatGUIController {
   Flocking flocking;
+  num separationWeight;
+  num alignmentWeight;
+  num cohesionWeight;
   DatGUIController(this.flocking) {
-    
+    this.separationWeight = 0.1;
+    this.alignmentWeight = 0.1;
+    this.cohesionWeight = 0.1;
   }
   
   void reset() {
@@ -18,19 +23,26 @@ class Flocking {
   Flock flock;
   Renderer2D renderer;
   dat.GUI gui;
+  DatGUIController DGC;
   
   Flocking(CanvasElement canvas) {
     flock = new Flock(new Vector2(canvas.width.toDouble(), canvas.height.toDouble()));
     renderer = new Renderer2D(flock, canvas.context2D);
-    DatGUIController DGC = new DatGUIController(this);
+    DGC = new DatGUIController(this);
     gui = new dat.GUI();
-    gui.add(DGC, 'reset');
+    gui.add(DGC, 'reset'); 
+    gui.add(DGC, 'separationWeight', 0, 1).step(0.01);
+    gui.add(DGC, 'alignmentWeight', 0, 1).step(0.01);
+    gui.add(DGC, 'cohesionWeight', 0, 1).step(0.01);
   }
   
   void start() {
   }
  
   void update(double dt) {
+    Boid.separationWeight = DGC.separationWeight;
+    Boid.alignmentWeight = DGC.alignmentWeight;
+    Boid.cohesionWeight = DGC.cohesionWeight;
     flock.update(dt);
     renderer.draw(dt);
   }
