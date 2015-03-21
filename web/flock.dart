@@ -2,7 +2,7 @@ part of flocking;
 
 class Flock {
   List<Boid> boids;
-  static const int NUM_BOIDS = 50;
+  static const int NUM_BOIDS = 1;
   final Vector2 worldSize;
   
   Flock(this.worldSize) {
@@ -22,29 +22,14 @@ class Flock {
     boids.forEach((b) {
       final List<Boid> neighbors = b.getNeighbors(boids);
       
-      b.separate(neighbors);
-      //b.align(neighbors);
-      //b.cohese(neighbors);
+      Vector2 alignVector = b.align(neighbors);
+      Vector2 separationVector = b.separate(neighbors);
+      Vector2 cohesionVector = b.cohese(neighbors);
+      b.velocity += (alignVector * 0.1 + separationVector * 0.1 + cohesionVector * 0.1);
+      
     });
     
     boids.forEach((b) => b.update(dt));
-    
-    if (logTimer > 0.0) {
-      logTimer -= dt;
-      if (logTimer <= 0.0) {
-        logTimer = 1.0;
-        // Get fastest boid
-        double maxVelocity = 0.0;
-        double maxAcceleration = 0.0;
-        boids.forEach((b) {
-          if (b.velocity.length > maxVelocity) maxVelocity = b.velocity.length;
-          if (b.acceleration.length > maxAcceleration) maxAcceleration = b.acceleration.length;
-        });
-        print('------------------------------');
-        print('Max Velocity    : $maxVelocity');
-        print('Max Acceleration: $maxAcceleration');
-      }
-    }
     
     wrapEdges();
   }

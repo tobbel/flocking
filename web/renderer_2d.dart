@@ -16,21 +16,6 @@ class Renderer2D {
       Vector2 right = b.position - perp;
       Vector2 front = b.position + dir * 30.0;
       
-//      context.beginPath();
-//      context.arc(b.position.x, b.position.y, 100.0, 0, Math.PI * 2.0);
-//      context.closePath();
-//      context.stroke();
-      
-//      if (b.avgCenter.x != 0.0 && b.avgCenter.y != 0.0) {
-//        context.beginPath();
-//        context.moveTo(b.position.x, b.position.y);
-//        context.lineTo(b.position.x + b.avgCenter.x, b.position.y + b.avgCenter.y);
-//        context.stroke();
-//        context.closePath();
-//      }
-      
-      
-      
       context.beginPath();
       context.moveTo(left.x, left.y);
       context.lineTo(right.x, right.y);
@@ -81,11 +66,10 @@ class Renderer2D {
         context.strokeStyle = 'black';
         context.beginPath();
         context.moveTo(b.position.x, b.position.y);
-        context.lineTo(b.position.x + b.acceleration.x * 10.0, b.position.y + b.acceleration.y * 10.0);
+        
         context.stroke();
         context.closePath();
       }
-      b.acceleration *= 0.0;
     });
   }
 }

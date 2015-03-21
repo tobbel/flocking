@@ -1,10 +1,9 @@
 part of flocking;
 
 class Boid {
-  static const double NEIGHBORHOOD_DISTANCE = 10.0;
+  static const double NEIGHBORHOOD_DISTANCE = 100.0;
   
-  static const double MAX_SPEED = 100.0;
-  static const double MAX_ACCELERATION = 5.0;
+  static const double MAX_SPEED = 250.0;
   
   static double separationWeight = 1.0;
   static double alignmentWeight = 1.0;
@@ -17,7 +16,6 @@ class Boid {
   
   Vector2 position;
   Vector2 velocity;
-  Vector2 acceleration;
 
   Vector2 separationStrength = new Vector2(0.0, 0.0);
   Vector2 alignmentStrength = new Vector2(0.0, 0.0);
@@ -28,105 +26,81 @@ class Boid {
 
   Boid(this.position, this.id) {
     final double direction = Flocking.rand.nextDouble() * Math.PI * 2.0;
-    acceleration = new Vector2(Math.sin(direction), Math.cos(direction));
-    velocity = new Vector2(0.0, 0.0);
+    velocity = new Vector2(Flocking.rand.nextDouble() * 2 - 1, Flocking.rand.nextDouble() * 2 - 1);
   }
   
   // This should be somewhere else, putting it here for now
-  void limit(Vector2 vector, double maxLength) {
+  Vector2 limit(Vector2 vector, double maxLength) {
     if (vector.length2 > maxLength * maxLength) {
       vector.normalize();
       vector *= maxLength;
     }
+    return vector;
   }
   
   void update(double dt) {
-    velocity += acceleration * dt;
-    limit(velocity, MAX_SPEED);
+    velocity = limit(velocity, MAX_SPEED);
     position += velocity * dt;
-    
-    // TODO: Clearing acc in renderer to render acc
-    //acceleration *= 0.0;
   }
   
-  void separate(List<Boid> neighbors) {
+  Vector2 separate(List<Boid> neighbors) {
+    Vector2 totalSeparation = new Vector2(0.0, 0.0);
     if (neighbors.isEmpty)
-          return;
-        
-    // Calculate sum of all toNeighbor vectors. Negate and add to velocity.
-    Vector2 separation = new Vector2(0.0, 0.0);
-    Vector2 sumTo = new Vector2(0.0, 0.0);
-    double count = 0.0;
+      return totalSeparation;
+    
     for (final Boid n in neighbors) {
-      if (n == this) continue;
-      final Vector2 toNeighbor = n.position - position;
-      final double distance = toNeighbor.length;
-      if (distance <= 0) continue;
-      
-      count++;
-      sumTo += toNeighbor.normalized() / distance;
+      totalSeparation += n.position - this.position;
     }
     
-    if (count <= 0) return;
-    avgCenter = sumTo;
-    sumTo /= count;
-    sumTo.normalize();
-    sumTo *= MAX_SPEED;
-    sumTo -= velocity;
-
-    limit(sumTo, MAX_ACCELERATION);
-    separationStrength = sumTo * separationWeight;
-    acceleration -= sumTo * separationWeight;
+    totalSeparation.x /= neighbors.length;
+    totalSeparation.y /= neighbors.length;
+    totalSeparation *= 1.0;
+    totalSeparation.normalize();
+    
+    return totalSeparation;
   }
   
-  void align(List<Boid> neighbors) {
-    if (neighbors.isEmpty)
-      return;
+  Vector2 align(List<Boid> neighbors) {
+    Vector2 totalAlignment = new Vector2(0.0, 0.0);
     
-    // Calculate average heading of neighbors. 
-    Vector2 sumVelocity = new Vector2(0.0, 0.0);
+    if (neighbors.isEmpty)
+      return totalAlignment;
+    
     for (final Boid n in neighbors) {
-      if (n == this) continue;
-      sumVelocity += n.velocity.normalized();
+      totalAlignment += n.velocity;
     }
-    sumVelocity /= neighbors.length.toDouble();
-    sumVelocity.normalize();
-    sumVelocity *= MAX_SPEED;
-    sumVelocity -= velocity;
-
-    limit(sumVelocity, MAX_ACCELERATION);
-    alignmentStrength = sumVelocity * alignmentWeight;
-    acceleration += sumVelocity * alignmentWeight;
-  }
-  
-  void cohese(List<Boid> neighbors) {
-    if (neighbors.isEmpty)
-      return;
     
-    // Calculate average position of neighbors. Steer towards it.
-    Vector2 avgPosition = new Vector2(0.0, 0.0);
+    totalAlignment.x /= neighbors.length;
+    totalAlignment.y /= neighbors.length;
+    totalAlignment.normalize();
+    
+    return totalAlignment;
+  }
+ 
+  Vector2 cohese(List<Boid> neighbors) {
+    Vector2 totalCohesion = new Vector2(0.0, 0.0);
+    
+    if (neighbors.isEmpty)
+      return totalCohesion;
+    
     for (final n in neighbors) {
       if (n == this) continue;
-      avgPosition += n.position;
+      totalCohesion += n.position;
     }
-    if (avgPosition.x == 0.0 && avgPosition.y == 0.0) {
-      return;
-    }
-
-    avgPosition /= neighbors.length.toDouble();
-    avgPosition.normalize();
-    avgPosition *= MAX_SPEED;
-    Vector2 steer = avgPosition - velocity;
     
-    limit(steer, MAX_ACCELERATION);
-    cohesionStrength = steer * cohesionWeight;
-    acceleration += steer * cohesionWeight;
+    totalCohesion.x /= neighbors.length;
+    totalCohesion.y /= neighbors.length;
+    
+    totalCohesion = totalCohesion - this.position;
+    totalCohesion.normalize();
+    return totalCohesion;
   }
   
   List<Boid> getNeighbors(List<Boid> boids) {
     List<Boid> neighbors = new List<Boid>();
     for (final Boid b in boids)
     {
+      if (b == this) continue;
       // TODO: Angle
       //Vector2 toNeighbor = b.position - position;
       //final double angle = Math.atan2(toNeighbor.y, toNeighbor.x);
