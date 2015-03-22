@@ -3,7 +3,7 @@ part of flocking;
 class Boid {
   static const double NEIGHBORHOOD_DISTANCE = 100.0;
   
-  static const double MAX_SPEED = 150.0;
+  static const double MAX_SPEED = 50.0;
   
   static num separationWeight = 0.1;
   static num alignmentWeight = 0.1;
@@ -40,7 +40,7 @@ class Boid {
   
   void update(double dt) {
     velocity = limit(velocity, MAX_SPEED);
-    position += velocity * dt;
+    position += velocity * dt * 5.0;
   }
   
   Vector2 separate(List<Boid> neighbors) {
